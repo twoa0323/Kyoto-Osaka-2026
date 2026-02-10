@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="zh-TW"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;2026 Kyoto &amp; Osaka Planner&lt;/title&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- React &amp; Babel CDN --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/react@18/umd/react.development.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/@babel/standalone/babel.min.js"&gt;&lt;/script&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Tailwind CSS --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Fonts --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Noto+Serif+TC:wght@400;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Lucide Icons --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/lucide@latest"&gt;&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>:root { --brand-red: #8D2B2B; --bg-creme: #FAF9F6; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body { font-family: 'Inter', sans-serif; background-color: var(--bg-creme); color: #333; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.serif { font-family: 'Noto Serif TC', serif; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.hide-scrollbar::-webkit-scrollbar { display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 選中日期下的紅點 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.active-dot::after {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: ''; position: absolute; bottom: -6px; left: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateX(-50%); width: 4px; height: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--brand-red); border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.glass { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.divider { height: 1px; background-color: #EFEBE4; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.animate-fade { animation: fadeIn 0.4s ease-out forwards; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="root"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const { useState, useEffect, useMemo } = React;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const TRAVEL_DATA = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 1, date: '25', day: 'SAT', title: '鴨川散策與京都首夜', city: '京都市', img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 101, time: '13:25', title: '出發 (JX846)', desc: '星宇航空 TPE 直飛 KIX', type: 'FLIGHT' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 102, time: '16:00', title: '錦市場巡禮', desc: '品嚐豆乳甜甜圈與三木雞卵', type: 'FOOD' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 103, time: '17:30', title: '鴨川步道', desc: '欣賞週末傍晚的河岸風光', type: 'SIGHT' }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 2, date: '26', day: 'SUN', title: '嵐山新綠與金閣寺', city: '嵐山', img: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 201, time: '09:30', title: '嵐山竹林之道', desc: '天龍寺與曹源池庭園', type: 'SIGHT' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 202, time: '15:30', title: '金閣寺 (鹿苑寺)', desc: '午後陽光映照金箔最美時刻', type: 'SIGHT' }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 3, date: '27', day: 'MON', title: '任天堂博物館與宇治', city: '宇治市', img: 'https://images.unsplash.com/photo-1601362840469-51e4d8d59085?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 301, time: '11:00', title: '任天堂博物館', desc: 'Nintendo Museum (預約制)', type: 'SIGHT', highlight: true },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 302, time: '15:00', title: '宇治平等院', desc: '抹茶巡禮與紫藤花', type: 'SIGHT' }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 4, date: '28', day: 'TUE', title: '清水舞台與移動至大阪', city: '大阪市', img: 'https://images.unsplash.com/photo-1528164344705-47542687990d?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 401, time: '08:30', title: '清水寺參拜', desc: '清水舞台、音羽瀑布', type: 'SIGHT' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 402, time: '17:00', title: '道頓堀巡禮', desc: '與跑跑人看板合照', type: 'SIGHT' }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 5, date: '29', day: 'WED', title: '大阪古今巡禮 (昭和日)', city: '大阪市', img: 'https://images.unsplash.com/photo-1590253504396-72449038bc4a?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 501, time: '09:30', title: '大阪城天守閣', desc: '登頂俯瞰市景', type: 'SIGHT' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 502, time: '17:30', title: '阿倍野展望台', desc: '看關西壯觀夜景', type: 'SIGHT' }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 6, date: '30', day: 'THU', title: 'USJ 全日冒險', city: '環球城', img: 'https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 601, time: '08:30', title: '環球影城入園', desc: '任天堂世界與哈利波特', type: 'SIGHT', highlight: true }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 7, date: '01', day: 'FRI', title: '勝尾寺祈福與梅田', city: '大阪市', img: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 701, time: '11:30', title: '勝尾寺參拜', desc: '祈求勝運的達摩之寺', type: 'SIGHT' },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 702, time: '15:30', title: '梅田最後購物', desc: '百貨公司採買', type: 'SIGHT' }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 8, date: '02', day: 'SAT', title: '返程台北', city: '關西機場', img: 'https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&amp;w=1000', items: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ id: 801, time: '13:25', title: '回程起飛', desc: '結束 8 天美好假期', type: 'FLIGHT' }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const App = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [selectedIdx, setSelectedIdx] = useState(0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [view, setView] = useState('plan'); // plan, wallet, info</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [gpsOn, setGpsOn] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [isMoving, setIsMoving] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [detailItem, setDetailItem] = useState(null);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [expenses, setExpenses] = useState([{ id: 1, name: '預估零用金', amount: 50000, currency: 'JPY' }]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; lucide.createIcons(), [selectedIdx, view, gpsOn, isMoving, detailItem]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const currentDay = TRAVEL_DATA[selectedIdx];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const exchangeRate = 0.22;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const totalTWD = expenses.reduce((acc, curr) =&gt; acc + (curr.currency === 'JPY' ? curr.amount * exchangeRate : curr.amount), 0);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="max-w-md mx-auto min-h-screen relative bg-white lg:shadow-2xl"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{/* FIXED HEADER (參考圖 IMG_5967 比例) */}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;header className="fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-[#FAF9F6] pt-8 px-6 pb-2 border-b border-gray-100 lg:max-w-xl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p className="text-[10px] tracking-[0.4em] text-[#C4C0B8] uppercase font-bold text-center mb-1"&gt;Japan Trip&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-center items-center gap-1.5 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h1 className="serif text-xl font-bold tracking-tight text-[#444]"&gt;Kyoto &amp; Osaka&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span className="text-[10px] border border-gray-300 rounded-full px-2 py-0.5 text-gray-400 italic"&gt;2026&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                        </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="absolute top-[82px] left-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span className="text-[9px] tracking-widest text-[#C4C0B8] font-bold uppercase"&gt;Apr 25 - May 2&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>{/* 日期滑動列 (完整 8 天) */}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 overflow-x-auto hide-scrollbar flex gap-8 pt-5 pb-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>{TRAVEL_DATA.map((d, i) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div key={d.id} onClick={() =&gt; { setSelectedIdx(i); setView('plan'); }} className={`relative flex flex-col items-center min-w-[32px] cursor-pointer transition-all ${view === 'plan' &amp;&amp; selectedIdx === i ? 'text-black font-bold active-dot' : 'text-[#C4C0B8]'}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[9px] mb-0.5"&gt;{d.day}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="serif text-xl leading-none"&gt;{d.date}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                            </span></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="flex items-center pt-5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="w-[1px] h-7 bg-gray-200 mx-4"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="flex gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={() =&gt; setView('wallet')} className={`relative flex flex-col items-center gap-0.5 ${view === 'wallet' ? 'text-black font-bold active-dot' : 'text-[#C4C0B8]'}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;i data-lucide="pencil-line" className="w-4 h-4"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[9px] font-bold" style={{writingMode: 'vertical-lr'}}&gt;帳&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={() =&gt; setView('info')} className={`relative flex flex-col items-center gap-0.5 ${view === 'info' ? 'text-black font-bold active-dot' : 'text-[#C4C0B8]'}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;i data-lucide="info" className="w-4 h-4"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[9px] font-bold" style={{writingMode: 'vertical-lr'}}&gt;訊&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{/* CONTENT AREA */}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="pt-40 pb-32"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{view === 'plan' &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="animate-fade"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>{/* 日期照片 */}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="px-5 mt-4 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div className="relative h-56 rounded-3xl overflow-hidden shadow-2xl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;img src={currentDay.img} className="w-full h-full object-cover" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="absolute bottom-6 left-6 right-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div className="flex items-center gap-2 mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;span className="glass px-2.5 py-0.5 rounded text-[8px] font-bold text-white uppercase tracking-widest"&gt;Day {currentDay.id}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;span className="glass px-2.5 py-0.5 rounded text-[8px] font-bold text-white uppercase tracking-widest flex items-center gap-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;i data-lucide="map-pin" className="w-2 h-2"&gt;&lt;/i&gt; {currentDay.city}</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;h2 className="serif text-2xl text-white font-bold leading-tight tracking-tight"&gt;{currentDay.title}&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                                </span>{/* 天氣預報區塊 (IMG_5967 比例) */}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="px-6 mb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h3 className="serif text-3xl text-[#C4C0B8] font-bold mb-1 tracking-tight"&gt;{currentDay.city}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div className="flex justify-between items-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[10px] text-[#D4D0C8] font-medium tracking-wider"&gt;未來 24 小時預報&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[9px] text-[#E0DDD6] tracking-widest uppercase"&gt;Open-Meteo&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div className="flex overflow-x-auto gap-8 hide-scrollbar py-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>{["現在", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"].map((t, idx) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div key={idx} className="flex flex-col items-center min-w-[45px] gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;span className="text-[10px] text-[#D4D0C8] font-medium"&gt;{t}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;i data-lucide="sun" className="w-5 h-5 text-[#E0DDD6]"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;span className="serif text-xl text-[#C4C0B8] font-medium"&gt;{18 - idx}°&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="divider mx-6 mb-10 opacity-50"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                                </span>{/* 時間軸 */}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="px-6 space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[0.5px] before:bg-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>{currentDay.items.map((item) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div key={item.id} onClick={() =&gt; setDetailItem(item)} className={`flex gap-6 cursor-pointer group transition-all ${item.highlight ? 'p-5 rounded-2xl ml-[-12px] bg-white border border-transparent shadow-xl ring-1 ring-amber-100' : ''}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div className={`relative z-10 w-[24px] h-[24px] rounded-full border border-gray-100 bg-white flex items-center justify-center text-[#D4D0C8] shadow-sm group-hover:bg-[#8D2B2B] group-hover:text-white transition-all`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;i data-lucide={item.type === 'FLIGHT' ? 'plane' : 'map-pin'} className="w-3.5 h-3.5"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div className="flex-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;div className="flex items-center gap-2 mb-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;span className="text-[11px] font-bold text-[#D4D0C8] tracking-tighter"&gt;{item.time}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                    </span>{item.highlight &amp;&amp; &lt;span className="text-[8px] bg-amber-50 text-amber-500 px-1.5 py-0.5 rounded font-bold uppercase tracking-widest"&gt;Highlight&lt;/span&gt;}</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;h3 className="serif text-base font-bold text-[#444] tracking-tight"&gt;{item.title}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;p className="text-xs text-[#D4D0C8] mt-1.5 leading-relaxed opacity-80"&gt;{item.desc}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>)}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{view === 'wallet' &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="animate-fade px-6 py-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h2 className="serif text-2xl font-bold mb-6 text-[#444]"&gt;旅行帳本&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="bg-[#1A1A1A] text-white p-8 rounded-[40px] shadow-2xl mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p className="text-[10px] opacity-40 tracking-widest uppercase mb-1"&gt;Total Estimated (TWD)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h3 className="text-4xl font-light tracking-tighter"&gt;$ {Math.round(totalTWD).toLocaleString()}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p className="text-[9px] opacity-20 italic"&gt;Exchange rate: 0.22 (JPY/TWD)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>)}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{view === 'info' &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="animate-fade px-6 py-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h2 className="serif text-2xl font-bold mb-8 text-[#444]"&gt;實用資訊&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="p-6 bg-red-50 rounded-[35px] border border-red-100 mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h3 className="serif font-bold text-red-900 mb-4 flex items-center gap-2"&gt;&lt;i data-lucide="shield-alert" className="w-4 h-4 text-red-500"&gt;&lt;/i&gt; 緊急聯絡&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div className="grid grid-cols-2 gap-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="bg-white p-4 rounded-2xl text-center shadow-sm"&gt;&lt;p className="text-[9px] text-red-300 font-bold mb-1"&gt;警察&lt;/p&gt;&lt;p className="serif text-2xl font-bold text-red-700"&gt;110&lt;/p&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="bg-white p-4 rounded-2xl text-center shadow-sm"&gt;&lt;p className="text-[9px] text-red-300 font-bold mb-1"&gt;救護車&lt;/p&gt;&lt;p className="serif text-2xl font-bold text-red-700"&gt;119&lt;/p&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{/* STATUS BAR (IMG_5967 下方邏輯) */}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="fixed bottom-10 left-1/2 -translate-x-1/2 w-[92%] max-w-sm glass rounded-[32px] p-3 border border-white/50 shadow-2xl flex items-center justify-between z-40 lg:max-w-md bg-white/80"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex items-center gap-3 flex-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div onClick={() =&gt; setGpsOn(!gpsOn)} className="flex flex-col items-center gap-0.5 border-r border-gray-100 pr-3 cursor-pointer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${gpsOn ? 'bg-red-50 text-red-600 animate-pulse' : 'bg-[#FAF9F6] text-[#D4D0C8]'}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;i data-lucide={gpsOn ? 'target' : 'map-pin-off'} className="w-4 h-4"&gt;&lt;/i&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span className={`text-[7px] font-bold uppercase ${gpsOn ? 'text-red-700' : 'text-[#D4D0C8]'}`}&gt;GPS {gpsOn ? 'ON' : 'OFF'}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                            </span></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 cursor-pointer" onClick={() =&gt; gpsOn ? setIsMoving(!isMoving) : setView('plan')}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>{gpsOn ? (</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="flex items-center gap-2 mb-0.5"&gt;&lt;span className="serif text-base font-bold text-[#444] tracking-tighter"&gt;{isMoving ? '移動中...' : '準備中...'}&lt;/span&gt;&lt;span className="text-[8px] bg-red-100 px-1.5 py-0.5 rounded text-red-600 font-bold uppercase tracking-widest"&gt;Live&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-[9px] text-[#C4C0B8] font-medium truncate w-32 tracking-tight"&gt;→ {currentDay.items[0].title}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>) : (</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="flex items-center gap-2 mb-0.5 leading-none"&gt;&lt;span className="serif text-base font-bold text-[#444] tracking-tighter"&gt;13:25&lt;/span&gt;&lt;span className="text-[8px] bg-[#FAF9F6] px-1.5 py-0.5 rounded text-[#C4C0B8] font-bold uppercase"&gt;Next&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p className="text-[9px] text-[#C4C0B8] font-medium truncate w-32 tracking-tight"&gt;→ {currentDay.items[0].title}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                        </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="bg-[#FAF9F6] rounded-2xl px-4 py-2 text-right border border-[#F2EDE8] min-w-[80px]"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>{gpsOn ? (</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;&lt;i data-lucide="navigation" className="w-3.5 h-3.5 text-red-400 mb-0.5 ml-auto"&gt;&lt;/i&gt;&lt;div className="flex flex-col"&gt;&lt;span className="text-[13px] font-bold text-[#444] leading-none tracking-tighter"&gt;10,970&lt;/span&gt;&lt;span className="text-[6px] text-[#C4C0B8] font-bold uppercase tracking-widest"&gt;距離目標(M)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>) : (</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;&lt;div className="flex items-center justify-end gap-1 mb-0.5 opacity-20"&gt;&lt;i data-lucide="clock" className="w-3 h-3 text-[#444]"&gt;&lt;/i&gt;&lt;span className="text-[9px] font-bold text-[#444]"&gt;14:00&lt;/span&gt;&lt;/div&gt;&lt;span className="text-[7px] text-[#C4C0B8] font-bold uppercase tracking-widest leading-none"&gt;Estimate&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{/* MODAL: DETAIL */}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{detailItem &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="bg-white w-full max-w-sm rounded-[45px] overflow-hidden shadow-2xl relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;button onClick={() =&gt; setDetailItem(null)} className="absolute top-6 right-6 p-2.5 bg-[#FAF9F6] rounded-full z-10"&gt;&lt;i data-lucide="x" className="w-4 h-4 text-[#C4C0B8]"&gt;&lt;/i&gt;&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="h-44 bg-[#F2F1ED] flex items-center justify-center text-[#D4D0C8]"&gt;&lt;i data-lucide="map-pin" className="w-10 h-10"&gt;&lt;/i&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="p-8 pb-12"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div className="flex items-center gap-2 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[10px] font-bold text-[#8D2B2B] bg-red-50 px-2 py-1 rounded tracking-tighter uppercase"&gt;{detailItem.time}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[9px] text-[#D4D0C8] font-bold tracking-[0.2em] uppercase"&gt;{detailItem.type}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h2 className="serif text-2xl font-bold mb-4 text-[#444] leading-tight tracking-tight"&gt;{detailItem.title}&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p className="text-sm text-[#C4C0B8] leading-relaxed mb-10"&gt;{detailItem.desc}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;button className="w-full bg-[#333] text-white py-4 rounded-[24px] font-bold text-[11px] active:scale-95 transition-all tracking-widest"&gt;GOOGLE MAPS 導航&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const root = ReactDOM.createRoot(document.getElementById('root'));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>root.render(&lt;App /&gt;);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
