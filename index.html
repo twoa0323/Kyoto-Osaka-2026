@@ -15,10 +15,10 @@
     <style>
         :root { 
             --brand-red: #8D2B2B; 
-            --bg-creme: #F2EDE4; 
-            --text-dark: #1A1A1A; 
-            --text-mid: #4A4A4A; 
-            --text-muted: #8E8A82; 
+            --bg-creme: #EBE7DE; /* 背景加深：復古暖米色 */
+            --text-dark: #1F1F1F; /* 主字體：近乎黑 */
+            --text-mid: #595755;  /* 次要字體：深灰褐 */
+            --text-muted: #787570; /* 輔助字體：加深灰 */
         }
         
         body { 
@@ -39,14 +39,15 @@
             background-color: var(--brand-red); border-radius: 50%;
         }
 
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
-        .glass-dark { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        /* 玻璃質感微調，適應深色背景 */
+        .glass { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.2); }
+        .glass-dark { background: rgba(30, 30, 30, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         
         .highlight-card {
             border: 1px solid transparent;
             background: linear-gradient(white, white) padding-box,
                         linear-gradient(to right, #D4AF37, #F9E29C) border-box;
-            box-shadow: 0 4px 20px rgba(141, 43, 43, 0.05);
+            box-shadow: 0 4px 20px rgba(141, 43, 43, 0.08);
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -61,7 +62,6 @@
 
         const ICON_MAP = { 'FLIGHT': 'plane', 'TRANSPORT': 'train', 'HOTEL': 'home', 'FOOD': 'utensils', 'SIGHTSEEING': 'camera', 'HIGHLIGHT': 'star', 'INFO': 'info' };
 
-        // 初始行程資料
         const INITIAL_PLAN = [
             { id: 1, date: '25', day: 'SAT', title: '抵達京都與鴨川', city: 'Kyoto', defaultImg: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000', customImg: null, items: [{ id: 101, time: '13:25', title: '出發 (JX846)', desc: '星宇航空 TPE 直飛 KIX', type: 'FLIGHT', location: '關西國際機場', highlight: false, btnLabel: '官方網站', link: 'https://www.starlux-airlines.com' }, { id: 102, time: '16:00', title: '錦市場巡禮', desc: '品嚐豆乳甜甜圈與三木雞卵', type: 'FOOD', location: '錦市場', highlight: false, btnLabel: '資訊', link: '' }] },
             { id: 2, date: '26', day: 'SUN', title: '嵐山新綠', city: 'Arashiyama', defaultImg: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1000', customImg: null, items: [{ id: 201, time: '09:30', title: '嵐山竹林之道', desc: '漫步綠意之道', type: 'SIGHTSEEING', location: '嵐山', highlight: false, btnLabel: '資訊', link: '' }] },
@@ -73,8 +73,6 @@
             { id: 8, date: '02', day: 'SAT', title: '返程台北', city: 'Airport', defaultImg: 'https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&w=1000', customImg: null, items: [{ id: 801, time: '13:25', title: '回程起飛', desc: '結束愉快 8 天行程', type: 'FLIGHT', location: '關西機場', highlight: false, btnLabel: '資訊', link: '' }] }
         ];
 
-        // 初始資訊資料 (包含 Google Maps, VJW, 緊急聯絡)
-        // types: 'MAP' (Google Map), 'VJW' (Visit Japan Web), 'EMERGENCY' (緊急), 'CARD' (一般資訊)
         const INITIAL_INFO = [
           { id: 'map', type: 'MAP', title: 'Google Maps', content: '開啟地圖導航', link: 'Osaka' },
           { id: 'vjw', type: 'VJW', title: 'Visit Japan Web', content: '入境審查 & 海關申報 (請截圖)', link: 'https://www.vjw.digital.go.jp/' },
@@ -85,9 +83,9 @@
 
         const App = () => {
             const load = (k, i) => { const s = localStorage.getItem(k); return s ? JSON.parse(s) : i; };
-            const [days, setDays] = useState(() => load('travel_days_v8', INITIAL_PLAN));
-            const [expenses, setExpenses] = useState(() => load('exp_v8', []));
-            const [infoItems, setInfoItems] = useState(() => load('info_v8', INITIAL_INFO));
+            const [days, setDays] = useState(() => load('travel_days_v9', INITIAL_PLAN));
+            const [expenses, setExpenses] = useState(() => load('exp_v9', []));
+            const [infoItems, setInfoItems] = useState(() => load('info_v9', INITIAL_INFO));
             
             const [view, setView] = useState('plan');
             const [selectedIdx, setSelectedIdx] = useState(0);
@@ -103,12 +101,25 @@
             const fileRef = useRef(null);
             const coverRef = useRef(null);
 
+            // 資料持久化
             useEffect(() => {
-                localStorage.setItem('travel_days_v8', JSON.stringify(days));
-                localStorage.setItem('exp_v8', JSON.stringify(expenses));
-                localStorage.setItem('info_v8', JSON.stringify(infoItems));
+                localStorage.setItem('travel_days_v9', JSON.stringify(days));
+                localStorage.setItem('exp_v9', JSON.stringify(expenses));
+                localStorage.setItem('info_v9', JSON.stringify(infoItems));
+            }, [days, expenses, infoItems]);
+
+            // 1. 一般渲染時更新圖標 (不包含 GPS)
+            useEffect(() => {
                 lucide.createIcons();
-            }, [days, expenses, infoItems, view, gpsOn, isMoving, editingItem, isEditMode, detailItem, editingInfo]);
+            }, [view, days, expenses, infoItems, isEditMode, editingItem, detailItem, editingExpense, editingInfo]); 
+
+            // 2. 專門處理 GPS 狀態切換的圖標渲染 (延遲執行，避免與 React 渲染衝突)
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    lucide.createIcons();
+                }, 50); // 給 React 一點時間完成 DOM 操作
+                return () => clearTimeout(timer);
+            }, [gpsOn, isMoving]);
 
             const currentDay = days[selectedIdx] || days[0];
             const firstItem = currentDay?.items?.[0] || { title: '目的地', location: 'Japan' };
@@ -117,17 +128,18 @@
             const openMaps = (q) => { if(q) window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`, '_blank'); };
             const openJMA = () => window.open('https://www.jma.go.jp/jma/index.html', '_blank');
 
-            // GPS 切換與導航啟動邏輯 (修復 Bug)
+            // GPS 切換與導航啟動邏輯 (修復版)
             const toggleGps = () => {
               const nextState = !gpsOn;
               setGpsOn(nextState);
+              
               if (nextState) {
-                  // 開啟時自動導航
+                  // 開啟時：延遲導航，避免阻塞 UI 渲染
                   if (firstItem?.location) {
-                      openMaps(firstItem.location);
+                      setTimeout(() => openMaps(firstItem.location), 300);
                   }
               }
-              // 關閉時不做額外動作，僅改變狀態，避免 crash
+              // 關閉時：只改變狀態，UI 會透過 key 屬性自動重繪，避免卡死
             };
 
             const handleUpload = (e, type) => {
@@ -145,24 +157,24 @@
                 <div className="max-w-md mx-auto min-h-screen relative lg:shadow-2xl">
                     
                     {/* FIXED HEADER */}
-                    <header className="fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-[#F2EDE4] pt-8 px-6 pb-2 border-b border-stone-300">
-                        <p className="text-[10px] tracking-[0.4em] text-stone-400 uppercase font-bold text-center mb-1">Japan Trip</p>
+                    <header className="fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-[#EBE7DE] pt-8 px-6 pb-2 border-b border-stone-300">
+                        <p className="text-[10px] tracking-[0.4em] text-stone-500 uppercase font-bold text-center mb-1">Japan Trip</p>
                         <div className="flex justify-center items-center relative mb-8">
-                            <div className="flex items-center gap-2 text-stone-800">
+                            <div className="flex items-center gap-2 text-stone-900">
                                 <h1 className="serif text-xl font-bold tracking-tight">Kyoto <span className="text-[12px] align-middle text-[#8D2B2B] mx-0.5 opacity-80">●</span> Osaka</h1>
-                                <span className="text-[9px] border border-stone-400 rounded-full px-2.5 py-0.5 italic font-medium">2026</span>
+                                <span className="text-[9px] border border-stone-500 rounded-full px-2.5 py-0.5 italic font-medium text-stone-600">2026</span>
                             </div>
                             <div className="absolute right-0 bottom-0 flex gap-5">
-                                <button onClick={() => { setView('wallet'); setIsEditMode(false); }} className={`flex flex-col items-center gap-1 transition-all ${view === 'wallet' ? 'text-black font-bold' : 'text-stone-400'}`}><i data-lucide="pencil-line" className="w-4 h-4"></i><span className="text-[9px] font-bold" style={{writingMode: 'vertical-lr'}}>帳本</span></button>
-                                <button onClick={() => { setView('info'); setIsEditMode(false); }} className={`flex flex-col items-center gap-1 transition-all ${view === 'info' ? 'text-black font-bold' : 'text-stone-400'}`}><i data-lucide="info" className="w-4 h-4"></i><span className="text-[9px] font-bold" style={{writingMode: 'vertical-lr'}}>資訊</span></button>
+                                <button onClick={() => { setView('wallet'); setIsEditMode(false); }} className={`flex flex-col items-center gap-1 transition-all ${view === 'wallet' ? 'text-black font-bold' : 'text-stone-500'}`}><i data-lucide="pencil-line" className="w-4 h-4"></i><span className="text-[9px] font-bold" style={{writingMode: 'vertical-lr'}}>帳本</span></button>
+                                <button onClick={() => { setView('info'); setIsEditMode(false); }} className={`flex flex-col items-center gap-1 transition-all ${view === 'info' ? 'text-black font-bold' : 'text-stone-500'}`}><i data-lucide="info" className="w-4 h-4"></i><span className="text-[9px] font-bold" style={{writingMode: 'vertical-lr'}}>資訊</span></button>
                             </div>
                         </div>
 
                         <div className="flex flex-col -mt-2">
-                            <span className="text-[9px] tracking-widest text-stone-500 font-bold uppercase mb-1 ml-1">Apr 25 - May 2</span>
+                            <span className="text-[9px] tracking-widest text-stone-600 font-bold uppercase mb-1 ml-1">Apr 25 - May 2</span>
                             <div className="flex overflow-x-auto hide-scrollbar flex gap-8 pt-3 pb-1">
                                 {days.map((d, i) => (
-                                    <div key={d.id} onClick={() => { setSelectedIdx(i); setView('plan'); }} className={`relative flex flex-col items-center min-w-[32px] cursor-pointer transition-all ${view === 'plan' && selectedIdx === i ? 'text-black font-bold active-dot' : 'text-stone-300'}`}>
+                                    <div key={d.id} onClick={() => { setSelectedIdx(i); setView('plan'); }} className={`relative flex flex-col items-center min-w-[32px] cursor-pointer transition-all ${view === 'plan' && selectedIdx === i ? 'text-black font-bold active-dot' : 'text-stone-400'}`}>
                                         <span className="text-[10px] mb-0.5">{d.day}</span>
                                         <span className="serif text-xl leading-none">{d.date}</span>
                                     </div>
@@ -176,8 +188,8 @@
                         {view === 'plan' && (
                             <div className="animate-fade">
                                 <div className="flex justify-between items-center mb-6 px-1">
-                                    <h2 className="serif text-xl font-bold text-stone-800 tracking-tight">{currentDay.title}</h2>
-                                    <button onClick={() => setIsEditMode(!isEditMode)} className="text-[9px] font-bold text-stone-500 px-3 py-1 rounded-full border border-stone-300 bg-white/50">{isEditMode ? '完成' : '管理'}</button>
+                                    <h2 className="serif text-xl font-bold text-stone-900 tracking-tight">{currentDay.title}</h2>
+                                    <button onClick={() => setIsEditMode(!isEditMode)} className="text-[9px] font-bold text-stone-600 px-3 py-1 rounded-full border border-stone-300 bg-white/50">{isEditMode ? '完成' : '管理'}</button>
                                 </div>
                                 
                                 <div className="relative h-56 rounded-[32px] overflow-hidden shadow-xl mb-12" onClick={() => isEditMode && coverRef.current.click()}>
@@ -195,15 +207,15 @@
 
                                 <div className="mb-12 px-1">
                                     <div className="flex justify-between items-center mb-8">
-                                        <span className="text-[10px] text-stone-500 font-bold tracking-wider uppercase">未來 24 小時預報</span>
-                                        <span className="text-[9px] text-stone-400 tracking-widest uppercase font-mono">Open-Meteo</span>
+                                        <span className="text-[10px] text-stone-600 font-bold tracking-wider uppercase">未來 24 小時預報</span>
+                                        <span className="text-[9px] text-stone-500 tracking-widest uppercase font-mono">Open-Meteo</span>
                                     </div>
                                     <div className="flex overflow-x-auto gap-8 hide-scrollbar">
                                         {["現在", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"].map((t, idx) => (
                                             <div key={idx} onClick={openJMA} className="flex flex-col items-center min-w-[42px] gap-4 cursor-pointer">
-                                                <span className="text-[10px] text-stone-500 font-medium">{t}</span>
-                                                <i data-lucide="sun" className="w-4.5 h-4.5 text-orange-400 opacity-80"></i>
-                                                <span className="serif text-xl text-stone-600 font-bold">{18 - idx}°</span>
+                                                <span className="text-[10px] text-stone-600 font-medium">{t}</span>
+                                                <i data-lucide="sun" className="w-4.5 h-4.5 text-orange-500 opacity-80"></i>
+                                                <span className="serif text-xl text-stone-700 font-bold">{18 - idx}°</span>
                                             </div>
                                         ))}
                                     </div>
@@ -229,8 +241,8 @@
                                                         <span className="text-[11px] font-bold text-stone-500 tracking-tighter">{item.time}</span>
                                                         {isEditMode && <button onClick={(e) => { e.stopPropagation(); const d = [...days]; d[selectedIdx].items = d[selectedIdx].items.filter(it => it.id !== item.id); setDays(d); }} className="text-red-400"><i data-lucide="trash-2" className="w-3.5 h-3.5"></i></button>}
                                                     </div>
-                                                    <h3 className={`serif text-base font-bold tracking-tight text-stone-800`}>{item.title}</h3>
-                                                    <p className="text-xs text-stone-500 mt-1.5 leading-relaxed truncate w-44">{item.desc}</p>
+                                                    <h3 className={`serif text-base font-bold tracking-tight text-stone-900`}>{item.title}</h3>
+                                                    <p className="text-xs text-stone-600 mt-1.5 leading-relaxed truncate w-44">{item.desc}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -254,8 +266,8 @@
                                     {expenses.map(e => (
                                         <div key={e.id} onClick={() => setEditingExpense(e)} className="p-6 bg-white rounded-[32px] border border-stone-200 flex justify-between items-center shadow-sm cursor-pointer active:scale-[0.98] transition-all">
                                             <div className="flex items-center gap-5">
-                                                <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-500"><i data-lucide={ICON_MAP[e.type] || 'receipt-text'} className="w-5 h-5"></i></div>
-                                                <div><p className="font-bold text-sm tracking-tight text-stone-800">{e.name}</p><p className="text-[10px] text-stone-400 font-bold">{e.currency === 'JPY' ? `¥${e.amount.toLocaleString()}` : `$${e.amount.toLocaleString()}`}</p></div>
+                                                <div className="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-600"><i data-lucide={ICON_MAP[e.type] || 'receipt-text'} className="w-5 h-5"></i></div>
+                                                <div><p className="font-bold text-sm tracking-tight text-stone-800">{e.name}</p><p className="text-[10px] text-stone-500 font-bold">{e.currency === 'JPY' ? `¥${e.amount.toLocaleString()}` : `$${e.amount.toLocaleString()}`}</p></div>
                                             </div>
                                             <p className="font-bold text-stone-900 text-sm">${Math.round(e.currency === 'JPY' ? e.amount * 0.22 : e.amount).toLocaleString()}</p>
                                         </div>
@@ -291,7 +303,7 @@
                                             </div>
                                           )}
 
-                                          {/* Visit Japan Web 風格 (IMG_5975: 黑底, 粉紅TAG) */}
+                                          {/* Visit Japan Web 風格 (IMG_5975) */}
                                           {item.type === 'VJW' && (
                                             <div onClick={() => isEditMode ? setEditingInfo(item) : item.link && window.open(item.link)} className="flex-1 p-7 bg-[#1A1A1A] rounded-[40px] shadow-lg relative active:scale-[0.98] transition-all overflow-hidden">
                                                 <span className="absolute top-6 left-6 text-[9px] bg-[#E85D75] text-white px-2 py-0.5 rounded font-bold tracking-widest">MUST HAVE</span>
@@ -317,10 +329,10 @@
                                           {item.type === 'CARD' && (
                                             <div onClick={() => isEditMode ? setEditingInfo(item) : item.link && window.open(item.link)} className="flex-1 p-6 bg-white border border-stone-200 rounded-[24px] shadow-sm relative active:scale-[0.98] transition-all">
                                                 <h4 className="serif text-lg font-bold text-stone-800 mb-2">{item.title}</h4>
-                                                <p className="text-xs text-stone-400 font-medium italic border-b border-stone-50 pb-4">{item.content}</p>
+                                                <p className="text-xs text-stone-500 font-medium italic border-b border-stone-50 pb-4">{item.content}</p>
                                                 <div className="mt-4 flex justify-between items-center">
                                                   <span className="text-[9px] font-bold text-stone-300 uppercase tracking-tighter">Open Link →</span>
-                                                  <button onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(item.content); }} className="text-stone-200"><i data-lucide="copy" className="w-4 h-4"></i></button>
+                                                  <button onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(item.content); }} className="text-stone-300"><i data-lucide="copy" className="w-4 h-4"></i></button>
                                                 </div>
                                                 {isEditMode && <button onClick={(e) => { e.stopPropagation(); setInfoItems(infoItems.filter(i => i.id !== item.id)); }} className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg"><i data-lucide="x" className="w-3 h-3"></i></button>}
                                             </div>
@@ -333,9 +345,9 @@
                         )}
                     </div>
 
-                    {/* STATUS BAR - 只在 PLAN 分頁顯示 */}
+                    {/* STATUS BAR - 只在 PLAN 分頁顯示，且修復 GPS 切換死鎖問題 */}
                     {view === 'plan' && (
-                        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 w-[92%] max-w-sm glass rounded-[32px] p-3.5 border border-white/60 shadow-2xl flex items-center justify-between z-40 bg-white/80">
+                        <div key={gpsOn ? 'gps-active' : 'gps-idle'} className="fixed bottom-10 left-1/2 -translate-x-1/2 w-[92%] max-w-sm glass rounded-[32px] p-3.5 border border-white/60 shadow-2xl flex items-center justify-between z-40 bg-white/80">
                             <div className="flex items-center gap-4 flex-1">
                                 <div onClick={toggleGps} className="flex flex-col items-center gap-0.5 border-r border-stone-200 pr-4 cursor-pointer group">
                                     <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${gpsOn ? 'bg-red-50 text-red-600 animate-pulse shadow-md' : 'bg-stone-100 text-stone-400'}`}><i data-lucide={gpsOn ? 'target' : 'map-pin-off'} className="w-4 h-4"></i></div>
@@ -442,9 +454,8 @@
                                         </div>
                                     </div>
                                     <div><label className="text-[10px] text-stone-400 font-bold uppercase block mb-1">標題</label><input className="w-full p-3 bg-stone-100 rounded-xl outline-none text-sm font-bold" value={editingItem.title} onChange={e => setEditingItem({...editingItem, title: e.target.value})} /></div>
-                                    <div className="flex gap-4">
-                                        <div className="flex-1"><label className="text-[10px] text-stone-400 font-bold uppercase mb-1 block">地點</label><input className="w-full p-3 bg-stone-100 rounded-xl outline-none text-xs font-bold" value={editingItem.location} onChange={e => setEditingItem({...editingItem, location: e.target.value})} /></div>
-                                    </div>
+                                    <div><label className="text-[10px] text-stone-400 font-bold uppercase block mb-1">內容描述</label><textarea className="w-full p-3 bg-stone-100 rounded-xl outline-none text-xs h-20" value={editingItem.desc} onChange={e => setEditingItem({...editingItem, desc: e.target.value})} /></div>
+                                    <div><label className="text-[10px] text-stone-400 font-bold uppercase block mb-1">導航地點</label><input className="w-full p-3 bg-stone-100 rounded-xl outline-none text-xs font-bold" value={editingItem.location} onChange={e => setEditingItem({...editingItem, location: e.target.value})} /></div>
                                     <div className="flex gap-3">
                                         <div className="flex-1"><label className="text-[10px] text-stone-400 font-bold uppercase mb-1 block">按鈕名稱</label><select className="w-full p-3 bg-stone-100 rounded-xl outline-none text-xs" value={editingItem.btnLabel} onChange={e => setEditingItem({...editingItem, btnLabel: e.target.value})}><option value="官方網站">官方網站</option><option value="資訊">資訊</option></select></div>
                                         <div className="flex-1"><label className="text-[10px] text-stone-400 font-bold uppercase mb-1 block">連結</label><input className="w-full p-3 bg-stone-100 rounded-xl outline-none text-xs" value={editingItem.link} onChange={e => setEditingItem({...editingItem, link: e.target.value})} placeholder="https://" /></div>
